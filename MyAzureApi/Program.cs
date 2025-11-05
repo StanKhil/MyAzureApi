@@ -1,4 +1,8 @@
 
+using Microsoft.EntityFrameworkCore;
+using MyAzureApi.Data;
+using System;
+
 namespace MyAzureApi
 {
     public class Program
@@ -13,6 +17,9 @@ namespace MyAzureApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSql")));
+
 
             var app = builder.Build();
 
