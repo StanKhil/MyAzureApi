@@ -15,8 +15,17 @@ namespace MyAzureApi.Controllers
         public StudentsController(DBContext context) => _context = context;
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() =>
-            Ok(await _context.Students.ToListAsync());
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                return Ok(await _context.Students.ToListAsync());
+            }
+            catch(Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create(Student s)
