@@ -30,19 +30,34 @@ namespace MyAzureApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Student s)
         {
-            _context.Students.Add(s);
-            await _context.SaveChangesAsync();
-            return Ok(s);
+            try
+            {
+                _context.Students.Add(s);
+                await _context.SaveChangesAsync();
+                return Ok(s);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.ToString());
+            }
+
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var s = await _context.Students.FindAsync(id);
-            if (s == null) return NotFound();
-            _context.Students.Remove(s);
-            await _context.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                var s = await _context.Students.FindAsync(id);
+                if (s == null) return NotFound();
+                _context.Students.Remove(s);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
         }
 
     }
