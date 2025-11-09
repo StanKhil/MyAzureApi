@@ -13,7 +13,7 @@ namespace MyAzureApi.Controllers
 
         public TableStorageController(IConfiguration configuration)
         {
-            connectionString = configuration["AzureStorage:ConnectionString"];
+            connectionString = configuration["azurestorageconnection"];
         }
         private readonly string tableName = "students";
 

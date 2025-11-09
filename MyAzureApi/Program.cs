@@ -1,7 +1,6 @@
-
 using Microsoft.EntityFrameworkCore;
 using MyAzureApi.Data;
-using System;
+using Azure.Identity;
 
 namespace MyAzureApi
 {
@@ -11,6 +10,26 @@ namespace MyAzureApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+            var keyVaultUrl = new Uri("https://myfirstazurekeyvault.vault.azure.net/");
+
+            Azure.Core.TokenCredential credential;
+
+            if (builder.Environment.IsDevelopment())
+            {
+                credential = new VisualStudioCredential();
+            }
+            else
+            {
+                credential = new DefaultAzureCredential();
+            }
+
+            builder.Configuration.AddAzureKeyVault(keyVaultUrl, credential);
+
+
+
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -18,7 +37,11 @@ namespace MyAzureApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSql")));
+            builder.Services.AddDbContext<DBContext>(options =>
+            {
+                var sqlConnectionString = builder.Configuration["azuresqlconnection"];
+                options.UseSqlServer(sqlConnectionString);
+            });
 
 
             var app = builder.Build();

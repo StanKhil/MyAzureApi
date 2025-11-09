@@ -12,7 +12,7 @@ namespace MyAzureApi.Controllers
 
         public BlobStorageController(IConfiguration configuration)
         {
-            connectionString = configuration["AzureStorage:ConnectionString"];
+            connectionString = configuration["azurestorageconnection"];
         }
 
         private readonly string containerName = "blobfiles"; 

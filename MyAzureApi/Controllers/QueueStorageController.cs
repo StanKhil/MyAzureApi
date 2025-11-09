@@ -14,7 +14,7 @@ namespace MyAzureApi.Controllers
 
         public QueueStorageController(IConfiguration configuration)
         {
-            connectionString = configuration["AzureStorage:ConnectionString"];
+            connectionString = configuration["azurestorageconnection"];
         }
 
         private readonly string queueName = "messages";
